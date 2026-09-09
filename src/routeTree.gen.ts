@@ -10,7 +10,9 @@
 
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as IndexRouteImport } from './routes/index'
+import { Route as AuctionRouteImport } from './routes/auction'
 import { Route as PlayersRouteImport } from './routes/players'
+import { Route as ProjectionRouteImport } from './routes/projection'
 import { Route as SettingsRouteImport } from './routes/settings'
 import { Route as TeamsRouteImport } from './routes/teams'
 
@@ -19,9 +21,19 @@ const IndexRoute = IndexRouteImport.update({
   path: '/',
   getParentRoute: () => rootRouteImport,
 } as any)
+const AuctionRoute = AuctionRouteImport.update({
+  id: '/auction',
+  path: '/auction',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const PlayersRoute = PlayersRouteImport.update({
   id: '/players',
   path: '/players',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ProjectionRoute = ProjectionRouteImport.update({
+  id: '/projection',
+  path: '/projection',
   getParentRoute: () => rootRouteImport,
 } as any)
 const SettingsRoute = SettingsRouteImport.update({
@@ -37,34 +49,50 @@ const TeamsRoute = TeamsRouteImport.update({
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
+  '/auction': typeof AuctionRoute
   '/players': typeof PlayersRoute
+  '/projection': typeof ProjectionRoute
   '/settings': typeof SettingsRoute
   '/teams': typeof TeamsRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
+  '/auction': typeof AuctionRoute
   '/players': typeof PlayersRoute
+  '/projection': typeof ProjectionRoute
   '/settings': typeof SettingsRoute
   '/teams': typeof TeamsRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
+  '/auction': typeof AuctionRoute
   '/players': typeof PlayersRoute
+  '/projection': typeof ProjectionRoute
   '/settings': typeof SettingsRoute
   '/teams': typeof TeamsRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/' | '/players' | '/settings' | '/teams'
+  fullPaths:
+    '/' | '/auction' | '/players' | '/projection' | '/settings' | '/teams'
   fileRoutesByTo: FileRoutesByTo
-  to: '/' | '/players' | '/settings' | '/teams'
-  id: '__root__' | '/' | '/players' | '/settings' | '/teams'
+  to: '/' | '/auction' | '/players' | '/projection' | '/settings' | '/teams'
+  id:
+    | '__root__'
+    | '/'
+    | '/auction'
+    | '/players'
+    | '/projection'
+    | '/settings'
+    | '/teams'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
+  AuctionRoute: typeof AuctionRoute
   PlayersRoute: typeof PlayersRoute
+  ProjectionRoute: typeof ProjectionRoute
   SettingsRoute: typeof SettingsRoute
   TeamsRoute: typeof TeamsRoute
 }
@@ -78,11 +106,25 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof IndexRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/auction': {
+      id: '/auction'
+      path: '/auction'
+      fullPath: '/auction'
+      preLoaderRoute: typeof AuctionRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/players': {
       id: '/players'
       path: '/players'
       fullPath: '/players'
       preLoaderRoute: typeof PlayersRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/projection': {
+      id: '/projection'
+      path: '/projection'
+      fullPath: '/projection'
+      preLoaderRoute: typeof ProjectionRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/settings': {
@@ -104,7 +146,9 @@ declare module '@tanstack/react-router' {
 
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
+  AuctionRoute: AuctionRoute,
   PlayersRoute: PlayersRoute,
+  ProjectionRoute: ProjectionRoute,
   SettingsRoute: SettingsRoute,
   TeamsRoute: TeamsRoute,
 }

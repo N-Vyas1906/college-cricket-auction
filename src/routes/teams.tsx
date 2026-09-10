@@ -72,12 +72,12 @@ function TeamsPage() {
       toast.error("Team name is required");
       return;
     }
-    const payload = {
+    const payload: Omit<Team, "id" | "spent" | "playerIds"> = {
       name: draft.name.trim(),
       shortName: (draft.shortName.trim() || initials(draft.name)).toUpperCase().slice(0, 4),
-      logo: draft.logo.trim() || undefined,
       purse: draft.purse,
     };
+    if (draft.logo.trim()) payload.logo = draft.logo.trim();
     if (editingId) {
       updateTeam(editingId, payload);
       toast.success(`${payload.name} updated`);

@@ -132,7 +132,8 @@ function PlayersPage() {
       return;
     }
     const { autoSet: _autoSet, ...payload } = d;
-    const clean = { ...payload, photo: payload.photo?.trim() || undefined };
+    const clean: Omit<Player, "id" | "status"> = { ...payload };
+    if (!clean.photo?.trim()) delete clean.photo;
     if (editingId) {
       updatePlayer(editingId, clean);
       toast.success(`${clean.name} updated`);

@@ -198,11 +198,11 @@ export function AuctionProvider({ children }: { children: ReactNode }) {
         commit((prev) => ({
           ...prev,
           teams: prev.teams.filter((t) => t.id !== id),
-          players: prev.players.map((p) =>
-            p.soldToTeamId === id
-              ? { ...p, status: "available", soldToTeamId: undefined, soldPrice: undefined }
-              : p,
-          ),
+          players: prev.players.map((p) => {
+            if (p.soldToTeamId !== id) return p;
+            const { soldToTeamId, soldPrice, ...rest } = p;
+            return { ...rest, status: "available" as const };
+          }),
           live: prev.live.currentBidderId === id ? { ...prev.live, currentBidderId: null } : prev.live,
         }));
       },
@@ -232,6 +232,7 @@ export function AuctionProvider({ children }: { children: ReactNode }) {
           );
           if (pool.length === 0) return prev;
           const player = prev.settings.randomize ? pool[Math.floor(Math.random() * pool.length)] : pool[0];
+          if (!player) return prev;
           picked = true;
           return {
             ...prev,
@@ -353,12 +354,10 @@ export function AuctionProvider({ children }: { children: ReactNode }) {
       resetAuction() {
         commit((prev) => ({
           ...prev,
-          players: prev.players.map((p) => ({
-            ...p,
-            status: "available" as const,
-            soldToTeamId: undefined,
-            soldPrice: undefined,
-          })),
+          players: prev.players.map((p) => {
+            const { soldToTeamId, soldPrice, ...rest } = p;
+            return { ...rest, status: "available" as const };
+          }),
           teams: prev.teams.map((t) => ({ ...t, spent: 0, playerIds: [] })),
           log: [],
           live: {
